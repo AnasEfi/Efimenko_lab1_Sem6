@@ -22,13 +22,20 @@ vector <HANDLE> hEvents;
 DWORD WINAPI Thread(LPVOID(lpParametr))
 {
     int i = int(lpParametr);
-    cout << i << " thread " << "done" <<endl;
+    cout << i << " thread " << "start" <<endl;
+    WaitForSingleObject(hEvents[i - 1], INFINITE);
+    cout << i << " thread " << "done" << endl;
     return 0;
 }
 
 void start()
 {
-    int i=1;
+    int i = 1;
+   /* for (i = 0;i < 10;i++)
+    {
+        hEvents.push_back(CreateEvent(NULL, FALSE, FALSE, NULL));
+        CreateThread(NULL, 0, Thread, (LPVOID)i, 0, NULL);
+    }*/
    
     HANDLE hStartEvent = CreateEvent(NULL, FALSE, FALSE, "StartEvent");
     HANDLE hStopEvent = CreateEvent(NULL, FALSE, FALSE, "StopEvent");
@@ -49,12 +56,17 @@ void start()
                 i++;
                 break;
         case 1 :
-            cout << hEvents.back() << " is deleted" << endl;
-            ResetEvent(hEvents.back());
-            hEvents.pop_back();
-            
-            SetEvent(hConfirmEvent);
-            break;     
+            if (hEvents.size() == 0)
+            {
+                cout << "end of vector" << endl;
+                i = 0;
+                break;
+            }
+                cout << hEvents.back() << " is deleted" << endl;
+                ResetEvent(hEvents.back());
+                hEvents.pop_back();
+                SetEvent(hConfirmEvent);
+                break;
         }
     }
     SetEvent(hConfirmEvent);
