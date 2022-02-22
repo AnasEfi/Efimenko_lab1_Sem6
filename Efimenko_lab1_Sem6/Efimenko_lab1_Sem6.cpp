@@ -54,7 +54,7 @@ void start()
             hEvents.pop_back();
             
             SetEvent(hConfirmEvent);
-            break;
+            break;     
         }
     }
     SetEvent(hConfirmEvent);
