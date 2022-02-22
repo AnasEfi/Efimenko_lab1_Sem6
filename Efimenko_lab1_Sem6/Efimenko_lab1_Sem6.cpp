@@ -31,12 +31,7 @@ DWORD WINAPI Thread(LPVOID(lpParametr))
 void start()
 {
     int i = 1;
-   /* for (i = 0;i < 10;i++)
-    {
-        hEvents.push_back(CreateEvent(NULL, FALSE, FALSE, NULL));
-        CreateThread(NULL, 0, Thread, (LPVOID)i, 0, NULL);
-    }*/
-   
+
     HANDLE hStartEvent = CreateEvent(NULL, FALSE, FALSE, "StartEvent");
     HANDLE hStopEvent = CreateEvent(NULL, FALSE, FALSE, "StopEvent");
     HANDLE hConfirmEvent = CreateEvent(NULL, FALSE, FALSE, "ConfirmEvent");
@@ -63,7 +58,7 @@ void start()
                 break;
             }
                 cout << hEvents.back() << " is deleted" << endl;
-                ResetEvent(hEvents.back());
+                SetEvent(hEvents.back());
                 hEvents.pop_back();
                 SetEvent(hConfirmEvent);
                 break;
